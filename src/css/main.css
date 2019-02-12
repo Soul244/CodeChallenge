@@ -1,0 +1,50 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Open Sans", sans-serif !important;
+  background-color: rgba(33, 33, 33, 0.1) !important;
+}
+
+html,
+#app,
+body {
+  height: 100%;
+}
+
+p {
+  display: inline;
+}
+
+.material-icons,
+.table td {
+  vertical-align: middle !important;
+}
+
+.content {
+  padding: 20px 20px 0 260px !important;
+}
+
+@media (max-width: 992px) {
+  .content {
+    padding: 20px 20px 0 84px !important;
+  }
+}
+
+.container-fluid,
+.col,
+.row {
+  height: 100% !important;
+}
+
+.card {
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.12);
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.12);
+  -webkit-transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  border-radius: 8px !important;
+}
+
+.pac-container {
+  z-index: 9999;
+}
+/*# sourceMappingURL=main.css.map */

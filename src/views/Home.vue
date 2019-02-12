@@ -8,30 +8,6 @@
       <b-row>
         <b-col md="12">
           <div class="card-list">
-            <!--
-            <b-card
-              header="Urgent Tasks"
-              header-bg-variant="warning"
-            >
-              <TaskList
-                :items="tasks.rows"
-                :fields="fields"
-                :update-task="updateTask"
-                :delete-task="deleteTask"
-                actions
-              />
-            </b-card>
-                        <b-card
-              header="Missed Tasks"
-              header-bg-variant="danger"
-              header-text-variant="white"
-            >
-              <TaskList
-                :items="tasks.rows"
-                :fields="fields"
-              />
-            </b-card>
-            -->
             <template v-if="isFetching">
               <p>Loading</p>
             </template>

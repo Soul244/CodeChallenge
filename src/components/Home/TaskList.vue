@@ -16,7 +16,7 @@
       slot="difference"
       slot-scope="data"
     >
-      <span>{{ difference(data.item.date, data.item.duration, data.item.time) }}</span>
+      <span>{{ difference(data.item.date, data.item.time, data.item.duration ) }}</span>
     </template>
     <template
       v-if="actions"
@@ -84,80 +84,83 @@ export default {
     }
   },
   methods: {
-    difference(date, duration, time) {
-      const start = moment(date, "YYYY-MM-DD");
-      const end = moment().format("YYYY-MM-DD");
-      let days = moment.duration(start.diff(end)).asDays();
-      let hours = "";
-      let minutes = "";
-      const durationRows = duration.split(" ");
-      const taskTimeRows = time.split(":");
-      console.log(taskTimeRows);
-      const taskHours = parseInt(taskTimeRows[0], 10);
-      const taskMinutes = parseInt(taskTimeRows[1], 10);
-      let durationHours = 0;
-      let durationMinutes = 0;
-      // Google give us a duration like these: 1 days 2 hours, 2 hours 43 minutes etc.
-      if (durationRows[1] === "day") {
-        const durationDays = durationRows[0];
-        days -= durationDays;
-        durationHours = durationRows[2];
-      } else if (durationRows[1] === "hours") {
-        durationHours = durationRows[0];
-      } else if (durationRows[1] === "mins") {
-        durationMinutes = durationRows[0];
-      }
-      let result = this.diff({
-        days,
-        durationHours,
-        durationMinutes,
-        taskHours,
-        taskMinutes
-      });
-      if(result.days<0 || 
-      (result.days===0 && result.hours<0) || 
-      (result.days===0 && result.hours===0 && result.minutes<0)) {
-        return "Task time finished"
-      }
-      return (
-        result.days +
-        " days " +
-        result.hours +
-        " hours " +
-        result.minutes +
-        " minutes"
+    difference(taskDate, taskHours, travellingDate) {
+      const formattedDate = moment(taskDate).format("DD/MM/YYYY");
+      const formattedHours = moment(taskHours, "H:mm");
+      const formattedTaskDate = moment(
+        formattedDate + formattedHours.format("HH:mm:ss"),
+        "DD/MM/YYYY HH:mm:ss"
       );
-    },
+      const today = moment().format();
+      if (moment(today).isSameOrAfter(formattedTaskDate)) {
+        return "finished";
+      }
+      //dateDuration give us duration between today and task date except travelling date
+      const dateDuration = moment.duration(formattedTaskDate.diff(today));
 
-    diff(time) {
-      const firstResult = this.getDiff(
-        time.days,
+      // Travelling Time
+      const travellingDateRows = travellingDate.split(" ");
+      let travellingDays = 0;
+      let travellingHours = 0;
+      let travellingMinutes = 0;
+      // Google give us a duration like these: 1 days 2 hours, 2 hours 43 minutes etc.
+      if (travellingDateRows[1] === "day") {
+        travellingDays = travellingDateRows[0];
+        travellingHours = travellingDateRows[2];
+      } else if (travellingDateRows[1] === "hours") {
+        travellingHours = travellingDateRows[0];
+        travellingMinutes = travellingDateRows[2];
+      } else if (travellingDateRows[1] === "mins") {
+        travellingMinutes = travellingDateRows[0];
+      }
+      const diffDays = this.getDiff(
+        dateDuration.days(),
         24,
-        time.durationHours,
-        time.taskHours
+        travellingHours,
+        dateDuration.hours()
       );
-      const secondResult = this.getDiff(
-        firstResult.t,
+      const diffHoursAndMinutes = this.getDiff(
+        diffDays.result,
         60,
-        time.durationMinutes,
-        time.taskMinutes
+        travellingMinutes,
+        dateDuration.minutes()
       );
-      return {
-        days: firstResult.main,
-        hours: secondResult.main,
-        minutes: secondResult.t
-      };
+      let estimatedDate = "";
+      if (dateDuration.years() < 0 || 
+          dateDuration.months() < 0 || 
+          diffDays.main < 0 ||
+          diffHoursAndMinutes.main < 0 ||
+          diffHoursAndMinutes.result < 0  
+          ) {
+        return "Finished";
+      }
+      if (dateDuration.years() > 0) {
+        estimatedDate = dateDuration.years() + " years ";
+      }
+      if (dateDuration.months() > 0) {
+        estimatedDate = estimatedDate + dateDuration.months() + " months ";
+      }
+      if (diffDays.main > 0) {
+        estimatedDate = estimatedDate + diffDays.main + " days ";
+      }
+      if (diffHoursAndMinutes.main > 0) {
+        estimatedDate = estimatedDate + diffHoursAndMinutes.main + " hours ";
+      }
+      if (diffHoursAndMinutes.result > 0) {
+        estimatedDate = estimatedDate + diffHoursAndMinutes.result + " minutes";
+      }
+      return estimatedDate;
     },
     getDiff(main, timeValue, first, second) {
-      let t = 0;
+      let result = 0;
       if (first > second) {
         main -= 1;
-        t = first - second - timeValue;
+        result = first - second - timeValue;
       } else {
-        t = first - second;
+        result = first - second;
       }
-      t = Math.abs(t);
-      return { main, t };
+      result = Math.abs(result);
+      return { main, result };
     }
   }
 };

@@ -69,8 +69,8 @@ export default {
                 lng
             };
             const destination = {
-                lat: task.address.lat,
-                lng: task.address.lng
+                lat: task.address.geometry.location.lat,
+                lng: task.address.geometry.location.lng
             };
             axios.post(`${apiUrl}/google/distance`, {
                     _id: task._id,

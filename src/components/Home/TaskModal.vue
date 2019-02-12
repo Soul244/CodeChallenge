@@ -126,17 +126,12 @@ export default {
       position: null,
       place: null,
       formErrors: [],
-      flash:'',
       form: {
         user: null,
         name: null,
         surname: null,
         email: null,
-        address: {
-          name: null,
-          lat: null,
-          lng: null,
-        },
+        address: null,
         phone: null,
         time: null,
         date: null
@@ -150,9 +145,10 @@ export default {
     task: function(newVal, oldVal) {
       const { form } = this;
       form.name = newVal.name;
+      this.place = newVal.place;
+      form.address = newVal.address;
       form.surname = newVal.surname;
       form.email = newVal.email;
-      form.address = newVal.address;
       form.phone = newVal.phone;
       form.time = newVal.time;
       form.date = newVal.date;
@@ -188,12 +184,8 @@ export default {
       this.flashMessage.show({status: 'error', title: 'Errors', message: formErrors.join(', ')})
 
       form.user = localStorage.getItem("_id");
-      form.address = {
-        name: this.place.name,
-        lat: this.place.geometry.location.lat(),
-        lng: this.place.geometry.location.lng(),
-      }
-      console.log(this.form);
+      form.address = this.place;
+
       if (this.type === "post") {
         this.postTask(this.form);
       } else {

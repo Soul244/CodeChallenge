@@ -125,6 +125,7 @@ export default {
       description: "",
       position: null,
       formErrors: [],
+      message: '',
       form: {
         _id: null,
         user: null,
@@ -141,7 +142,9 @@ export default {
     };
   },
   computed: {
-    ...mapState(["message"])
+    resultMessage () {
+      return this.$store.state.message;
+    }
   },
   watch: {
     task: function(newVal, oldVal) {
@@ -156,6 +159,9 @@ export default {
       form.date = newVal.date;
       form.isTaskDone = newVal.isTaskDone;
       form.isTaskMissed = newVal.isTaskMissed;
+    },
+    resultMessage: function(newVal) {
+      this.flashMessage.show({status: 'error', title: 'Errors', message: newVal})
     }
   },
   methods: {
@@ -169,7 +175,7 @@ export default {
     onSubmit(e) {
       e.preventDefault();
       this.formErrors=[];
-      const {form,formErrors} = this;
+      const {form,formErrors, resultMessage} = this;
       if(!form.name){
         formErrors.push('Name required')
       }
@@ -186,10 +192,12 @@ export default {
         formErrors.push("Address is required")
       }
       if(formErrors.length>0){
-      this.flashMessage.show({status: 'error', title: 'Errors', message: formErrors.join(', ')})
+        this.flashMessage.show({status: 'error', title: 'Errors', message: formErrors.join(', ')})
+      }
+      if(resultMessage) {
+        this.flashMessage.show({status: 'error', title: 'Errors', message: this.resultMessage})
       }
       form.user = localStorage.getItem("_id");
-    
       if (this.type === "post") {
         this.postTask(this.form);
       } else {

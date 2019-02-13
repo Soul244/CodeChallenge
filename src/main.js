@@ -13,7 +13,7 @@ Vue.prototype.moment = moment
 
 Vue.use(BootstrapVue);
 Vue.use(FlashMessage, {
-  time: 1000,
+  time: 3000,
 });
 Vue.use(VueGoogleMaps, {
   load: {

@@ -10,7 +10,7 @@ export default {
                 context.commit('getTasks', response.data);
             })
             .catch(e => {
-                console.log(e)
+                context.commit('error', e.response);
             });
     },
     getTask: (context, _id) => {
@@ -19,7 +19,7 @@ export default {
                 context.commit('getTask', response.data)
             })
             .catch(e => {
-                console.log(e);
+                context.commit('error', e.response);
             })
     },
     postTask: (context, payload) => {
@@ -28,7 +28,7 @@ export default {
                 context.commit('postTask', response.data);
             })
             .catch(e => {
-                console.log(e);
+                context.commit('error', e.response);
             })
     },
     updateTask: (context, payload) => {
@@ -38,7 +38,7 @@ export default {
                 context.commit('updateTask', response.data)
             })
             .catch(e => {
-                console.log(e);
+                context.commit('error', e.response);
             })
     },
     deleteTask: (context, _id) => {
@@ -48,7 +48,7 @@ export default {
                 context.commit('deleteTask', response.data)
             })
             .catch(e => {
-                console.log(e);
+                context.commit('error', e.response);
             })
     },
     doneTask: (context, _id) => {
@@ -59,7 +59,7 @@ export default {
                 context.commit('doneTask', response.data)
             })
             .catch(e => {
-                console.log(e);
+                context.commit('error', e.response);
             })
     },
     getDistance: (context, payload) => {
@@ -97,6 +97,9 @@ export default {
                         context.commit("fetched");
                     }
                 })
+                .catch(e=>{
+                    context.commit('error', e.response);
+                })
         });
     },
     getUpdateTask: (context, _id) => {
@@ -115,7 +118,7 @@ export default {
                 context.commit('login', response.data)
             })
             .catch(e => {
-                console.log(e);
+                context.commit('error', e.response);
             })
     },
     signup: (context, payload) => {
@@ -124,7 +127,7 @@ export default {
                 context.commit('signup', response.data)
             })
             .catch(e => {
-                console.log(e);
+                context.commit('error', e.response);
             })
     },
     logout: (context) => {

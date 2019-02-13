@@ -1,57 +1,62 @@
 <template>
-  <b-table
-    hover
-    responsive
-    :items="items"
-    :fields="fields"
-    small
-  >
-    <template
-      slot="index"
-      slot-scope="data"
-    >
-      {{ data.index+1 }}
-    </template>
-    <template
-      slot="difference"
-      slot-scope="data"
-    >
-      <span>{{ difference(data.item.date, data.item.time, data.item.duration ) }}</span>
-    </template>
-    <template
-      v-if="actions"
-      slot="actions"
-      slot-scope="data"
-    >
-      <div class="button-list">
-        <b-button
-          variant="outline-success"
-          @click="doneTask(data.index)"
+  <div>
+    <b-col md="12">
+      <b-table
+        hover
+        responsive
+        :items="items"
+        :fields="fields"
+        small
+      >
+        <template
+          slot="index"
+          slot-scope="data"
         >
-          Done
-        </b-button>
-        <b-button
-          v-b-modal.taskmodal
-          variant="outline-info"
-          @click="updateTask(data.index)"
+          {{ data.index+1 }}
+        </template>
+        <template
+          slot="difference"
+          slot-scope="data"
         >
-          Update
-        </b-button>
-        <b-button
-          variant="outline-danger"
-          @click="deleteTask(data.index)"
+          <span>{{ difference(data.item.date, data.item.time, data.item.duration ) }}</span>
+        </template>
+        <template
+          v-if="actions"
+          slot="actions"
+          slot-scope="data"
         >
-          Remove
-        </b-button>
-      </div>
-    </template>
-  </b-table>
+          <div class="button-list">
+            <b-button
+              variant="outline-success"
+              @click="doneTask(data.item._id)"
+            >
+              Done
+            </b-button>
+            <b-button
+              v-b-modal.taskmodal
+              variant="outline-info"
+              @click="updateTask(data.item._id)"
+            >
+              Update
+            </b-button>
+            <b-button
+              variant="outline-danger"
+              @click="deleteTask(data.item._id)"
+            >
+              Remove
+            </b-button>
+          </div>
+        </template>
+      </b-table>
+    </b-col>
+  </div>
 </template>
 
 <script>
 import moment from "moment";
 
 export default {
+  name: "TaskList",
   props: {
     actions: { type: Boolean, default: false },
     taskList: {
@@ -83,8 +88,14 @@ export default {
       default: () => {}
     }
   },
+  data: function() {
+    return {
+      filter: "",
+    };
+  },
   methods: {
     difference(taskDate, taskHours, travellingDate) {
+      if (!travellingDate) return "There is no way to go there";
       const formattedDate = moment(taskDate).format("DD/MM/YYYY");
       const formattedHours = moment(taskHours, "H:mm");
       const formattedTaskDate = moment(
@@ -126,14 +137,7 @@ export default {
         dateDuration.minutes()
       );
       let estimatedDate = "";
-      if (dateDuration.years() < 0 || 
-          dateDuration.months() < 0 || 
-          diffDays.main < 0 ||
-          diffHoursAndMinutes.main < 0 ||
-          diffHoursAndMinutes.result < 0  
-          ) {
-        return "Finished";
-      }
+
       if (dateDuration.years() > 0) {
         estimatedDate = dateDuration.years() + " years ";
       }

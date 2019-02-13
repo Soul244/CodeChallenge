@@ -1,42 +1,47 @@
 import router from '../../router';
 
 export default {
-    fetching:(state)=>{
-        state.isFetching=true;
-    },
-    fetched:(state)=>{
-        state.isFetching=false,
-        state.isFetched=true;
-    },
     getTasks: (state, payload) => {
         state.tasks = payload.tasks;
-    },
-    postTask: (state, payload) => {
-        state.tasks.push(payload.task);
-        state.message = payload.message;
-    },
-    getUpdateTask:(state,payload)=>{
-        state.task = payload;
+        state.activeTasks = payload.tasks.filter(task=>task.isTaskDone===false)
+        state.doneTasks = payload.tasks.filter(task=>task.isTaskDone===true)
     },
     getTask: (state, payload) => {
         state.task = payload.task;
+    },
+    postTask: (state, payload) => {
+        state.tasks.push(payload.task);
+        state.activeTasks.push(payload.task);
+        state.message = payload.message;
+    },
+    updateTask: (state, payload)=>{
+        const index = state.activeTasks.findIndex(task=>task._id===payload._id);
+        state.activeTasks[index] = payload.updatedData;
+        console.log(state.activeTasks[index]);
+    },
+    deleteTask:(state, payload)=>{
+        const index = state.activeTasks.findIndex(task=>task._id===payload._id);
+        state.activeTasks.splice(index, 1)
+    },
+    doneTask: (state, payload)=>{
+        const index = state.activeTasks.findIndex(task=>task._id===payload._id);        ;
+        state.doneTasks.push(state.activeTasks[index]);
+        state.activeTasks.splice(index, 1);
     },
     getDistance: (state,payload)=>{
         const index = state.tasks.findIndex(task=>task._id==payload._id);
         state.tasks[index].distance = payload.distance;
         state.tasks[index].duration = payload.duration;
     },
-    setUserLocation: (state,payload)=>{
-        state.userLocation = payload;
+
+    getUpdateTask:(state,payload)=>{
+        state.task = payload;
     },
     clearTask:(state)=>{
         state.task={};
     },
-    doneTask: (state, payload)=>{
-        console.log(payload);
-    },
-    deleteTask:(state, payload)=>{
-        state.tasks.splice(payload, 1)
+    setUserLocation: (state,payload)=>{
+        state.userLocation = payload;
     },
     login: (state, payload)=>{
         if(payload.token){
@@ -62,5 +67,12 @@ export default {
         localStorage.setItem('name', "");
         localStorage.setItem('token', "");
         router.push({path:'/auth'})
-    }
+    },
+    fetching:(state)=>{
+        state.isFetching=true;
+    },
+    fetched:(state)=>{
+        state.isFetching=false,
+        state.isFetched=true;
+    },
 }

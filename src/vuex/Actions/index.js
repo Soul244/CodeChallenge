@@ -13,6 +13,15 @@ export default {
                 console.log(e)
             });
     },
+    getTask: (context, _id) => {
+        axios.get(`${apiUrl}/tasks/${_id}`)
+            .then(response => {
+                context.commit('getTask', response.data)
+            })
+            .catch(e => {
+                console.log(e);
+            })
+    },
     postTask: (context, payload) => {
         axios.post(`${apiUrl}/tasks`, payload)
             .then(response => {
@@ -22,15 +31,18 @@ export default {
                 console.log(e);
             })
     },
-    getUpdateTask: (context, index) => {
-        const payload = context.state.tasks[index]
-        context.commit('getUpdateTask', payload);
+    updateTask: (context, payload) => {
+        const _id = payload._id;
+        axios.patch(`${apiUrl}/tasks/${_id}`, payload)
+            .then((response) => {
+                context.commit('updateTask', response.data)
+            })
+            .catch(e => {
+                console.log(e);
+            })
     },
-    clearTask: (context) => {
-        context.commit('clearTask');
-    },
-    deleteTask: (context, index) => {
-        const _id = context.state.tasks[index]._id;
+    deleteTask: (context, _id) => {
+        console.log(_id);
         axios.delete(`${apiUrl}/tasks/${_id}`)
             .then((response) => {
                 context.commit('deleteTask', response.data)
@@ -39,15 +51,16 @@ export default {
                 console.log(e);
             })
     },
-    doneTask: (context, index) =>{
-        const _id = context.state.tasks[index]._id;
-        axios.patch(`${apiUrl}/tasks/${_id}`,{isTaskDone: true})
-        .then((response) => {
-            context.commit('doneTask', response.data)
-        })
-        .catch(e => {
-            console.log(e);
-        })
+    doneTask: (context, _id) => {
+        axios.patch(`${apiUrl}/tasks/${_id}`, {
+                isTaskDone: true
+            })
+            .then((response) => {
+                context.commit('doneTask', response.data)
+            })
+            .catch(e => {
+                console.log(e);
+            })
     },
     getDistance: (context, payload) => {
         context.commit('fetching');
@@ -86,14 +99,12 @@ export default {
                 })
         });
     },
-    getTask: (context, _id) => {
-        axios.get(`${apiUrl}/tasks/${_id}`)
-            .then(response => {
-                context.commit('getTask', response.data)
-            })
-            .catch(e => {
-                console.log(e);
-            })
+    getUpdateTask: (context, _id) => {
+        const payload = context.state.tasks[context.state.tasks.findIndex(task => task._id == _id)];
+        context.commit('getUpdateTask', payload);
+    },
+    clearTask: (context) => {
+        context.commit('clearTask');
     },
     setUserLocation: (context, payload) => {
         context.commit('setUserLocation', payload);
@@ -101,7 +112,6 @@ export default {
     login: (context, payload) => {
         axios.post(`${apiUrl}/users/login`, payload)
             .then(response => {
-                console.log(response.data);
                 context.commit('login', response.data)
             })
             .catch(e => {

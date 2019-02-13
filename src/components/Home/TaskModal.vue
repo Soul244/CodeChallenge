@@ -24,7 +24,7 @@
           <gmap-autocomplete
             class="form-control"
             placeholder="Please enter an address"
-            @place_changed="setPlace"
+            @place_changed="setAddress"
           />
           <br>
           <Gmap-Map
@@ -38,11 +38,11 @@
               :position="position"
             />
             <Gmap-Marker
-              v-if="place"
+              v-if="form.address"
               label=""
               :position="{
-                lat: place.geometry.location.lat(),
-                lng: place.geometry.location.lng(),
+                lat: form.address.geometry.location.lat(),
+                lng: form.address.geometry.location.lng(),
               }"
             />
           </Gmap-Map>
@@ -124,9 +124,9 @@ export default {
     return {
       description: "",
       position: null,
-      place: null,
       formErrors: [],
       form: {
+        _id: null,
         user: null,
         name: null,
         surname: null,
@@ -134,7 +134,9 @@ export default {
         address: null,
         phone: null,
         time: null,
-        date: null
+        date: null,
+        isTaskDone: null,
+        isTaskMissed: null
       }
     };
   },
@@ -144,14 +146,16 @@ export default {
   watch: {
     task: function(newVal, oldVal) {
       const { form } = this;
+      //form.address = newVal.address;
+      form._id = newVal._id;
       form.name = newVal.name;
-      this.place = newVal.place;
-      form.address = newVal.address;
       form.surname = newVal.surname;
       form.email = newVal.email;
       form.phone = newVal.phone;
       form.time = newVal.time;
       form.date = newVal.date;
+      form.isTaskDone = newVal.isTaskDone;
+      form.isTaskMissed = newVal.isTaskMissed;
     }
   },
   methods: {
@@ -159,17 +163,8 @@ export default {
     setDescription(description) {
       this.description = description;
     },
-    setPlace(place) {
-      this.place = place;
-    },
-    usePlace(place) {
-      if (this.place) {
-        position = {
-          lat: this.place.geometry.location.lat(),
-          lng: this.place.geometry.location.lng()
-        };
-        this.place = null;
-      }
+    setAddress(address) {
+      this.form.address = address;
     },
     onSubmit(e) {
       e.preventDefault();
@@ -181,11 +176,20 @@ export default {
       if(!form.surname){
         formErrors.push("Surname required")
       }
+      if(!form.time){
+        formErrors.push("Time is required");
+      }
+      if(!form.date){
+        formErrors.push("Date is required");
+      }
+      if(!form.address){
+        formErrors.push("Address is required")
+      }
+      if(formErrors.length>0){
       this.flashMessage.show({status: 'error', title: 'Errors', message: formErrors.join(', ')})
-
+      }
       form.user = localStorage.getItem("_id");
-      form.address = this.place;
-
+    
       if (this.type === "post") {
         this.postTask(this.form);
       } else {

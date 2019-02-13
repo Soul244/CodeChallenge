@@ -98,22 +98,22 @@ export default {
         },
         {
           key: "duration",
-          label: "Travelling Time"
+          label: "Travelling Time (Google)"
         },
-        "distance",
-        "difference",
+        {
+          key: "distance",
+          label: "Distance (Google)"
+        },
+        {
+          key: "difference",
+          label: "Difference (Calculated)"
+        },
         "actions"
       ]
     };
   },
   computed: {
-    ...mapState(["tasks", "task", "userLocation", "isFetching", "isFetched"]),
-    doneTasks: function(){
-        return this.tasks.filter(task=>task.isTaskDone===true)
-    },
-    activeTasks: function(){
-      return this.tasks.filter(task=>task.isTaskDone===false)
-    }
+    ...mapState(["tasks", "task", "userLocation", "isFetching", "isFetched", "activeTasks", "doneTasks"]),
   },
   watch: {
     tasks: function(tasks) {
@@ -161,24 +161,14 @@ export default {
       this.modalTitle = modalTitle;
       this.modalType = modalType;
     },
-    updateTask(index) {
-      this.getUpdateTask(index);
+    updateTask(_id) {
+      this.getUpdateTask(_id);
       this.setModal("Update Task", "update");
     },
     postTask() {
       this.clearTask();
       this.setModal("New Task", "post");
     },
-    setDescription(description) {
-      this.description = description;
-    },
-    setPlace(place) {
-      if (!place) return;
-      this.latLng = {
-        lat: place.geometry.location.lat(),
-        lng: place.geometry.location.lng()
-      };
-    }
   }
 };
 </script>

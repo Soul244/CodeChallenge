@@ -89,7 +89,6 @@ export default {
     },
     onResetPasswordSubmit(e) {
       e.preventDefault();
-      console.log(this.resetForm)
     },
     onSignUpSubmit(e) {
       e.preventDefault();

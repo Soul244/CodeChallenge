@@ -9,6 +9,8 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     tasks: [],
+    doneTasks:[],
+    activeTasks:[],
     isFetching:false,
     isFetched:false,
     userLocation: {

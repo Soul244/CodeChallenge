@@ -39,7 +39,6 @@ exports.Post_Task = (req, res) => {
     time: body.time,
     date: body.date
   });
-  console.log(task);
   task.save()
     .then((task) => {
       res.status(200).json({
@@ -57,7 +56,6 @@ exports.Post_Task = (req, res) => {
 
 
 exports.Get_Tasks = (req, res) => {
-  console.log(req.params._id)
   Task.find({user: req.params._id})
     .sort({
       createdAt: -1
@@ -65,7 +63,6 @@ exports.Get_Tasks = (req, res) => {
     .exec()
     .then((tasks) => {
       if (tasks.length > 0) {
-        console.log(tasks);
         res.status(200).json({
           tasks,
           message: 'Görüşmeler getirildi...',
@@ -86,39 +83,38 @@ exports.Get_Tasks = (req, res) => {
 };
 
 exports.Delete_Task = (req, res) => {
+  const {_id} = req.params;
   Task.remove({
-      _id: req.params._id,
-    })
-    .exec()
-    .then(task =>
-      res.status(200).json({
-        message: 'Görüşme Silindi',
-      }))
-    .catch((error) => {
-      console.log(error);
-      res.status(500).json({
-        error,
-      });
+    _id
+  })
+  .exec()
+  .then(result =>
+    res.status(200).json({
+      _id,
+      message: 'Görüşme Silindi',
+    }))
+  .catch((error) => {
+    console.log(error);
+    res.status(500).json({
+      error,
     });
+  });
 };
 
 exports.Update_Task = (req, res) => {
   const {body,params} = req;
+  const {_id} = params;
   const updateOps = {};
+  var options = { new: true }; 
   for (const [key, value] of Object.entries(body)) {
     updateOps[key] = value;
   }
-  console.log(params._id)
-  console.log(updateOps);
-  Task.updateOne({
-    _id: params._id
-    }, {
-      $set: updateOps,
-    })
+  Task.findOneAndUpdate({_id}, { $set: updateOps}, options)
     .exec()
-    .then(() => {
-      console.log("Görüşme Güncellendi")
+    .then((result) => {
       res.status(200).json({
+        _id,
+        updatedData: result,
         message: 'Görüşme Güncellendi',
       });
     })

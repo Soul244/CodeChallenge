@@ -52,6 +52,7 @@ export default {
 <style scoped lang="scss">
 .nav-item {
   padding: 0.5rem 0 0.5rem 1rem;
+  text-align: left;
 }
 
 .nav-text {

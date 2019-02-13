@@ -53,3 +53,6 @@ after this command, project will run in this ip: http://localhost:8080
 
 * I used MongoDB Atlas. So, you don't need to install anything about database.
 
+## Issues
+
+* Because of vue2-google-maps package problems, i couldn't get initial data of address on update.

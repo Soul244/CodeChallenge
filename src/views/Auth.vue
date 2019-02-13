@@ -28,7 +28,15 @@
                   :on-submit="onSignUpSubmit"
                 />
               </b-tab>
-              <b-tab title="Reset Password">
+              <b-tab
+                title="Reset Password"
+              >
+                <b-alert
+                  variant="warning"
+                  show
+                >
+                  IN PROGRESS
+                </b-alert>
                 <ResetPassword
                   :form="resetForm"
                   :on-submit="onResetPasswordSubmit"

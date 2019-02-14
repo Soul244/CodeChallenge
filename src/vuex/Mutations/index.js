@@ -2,8 +2,7 @@ import router from '../../router';
 
 export default {
     error: (state, payload) => {
-        state.message = `error:${payload.status}: ${payload.statusText}`;
-        console.log(state.message);
+        state.message.push(`error:${payload.status}: ${payload.statusText}`);
     },
     getTasks: (state, payload) => {
         state.tasks = payload.tasks;
@@ -16,27 +15,29 @@ export default {
     postTask: (state, payload) => {
         state.tasks.push(payload.task);
         state.activeTasks.push(payload.task);
-        state.message = payload.message;
+        state.message.push(payload.message);
     },
     updateTask: (state, payload) => {
         const index = state.activeTasks.findIndex(task => task._id === payload._id);
         state.activeTasks[index] = payload.updatedData;
+        state.message.push(payload.message);
     },
     deleteTask: (state, payload) => {
         const index = state.activeTasks.findIndex(task => task._id === payload._id);
         state.activeTasks.splice(index, 1)
+        state.message.push(payload.message);
     },
     doneTask: (state, payload) => {
         const index = state.activeTasks.findIndex(task => task._id === payload._id);;
         state.doneTasks.push(state.activeTasks[index]);
         state.activeTasks.splice(index, 1);
+        state.message.push(payload.message);
     },
     getDistance: (state, payload) => {
         const index = state.tasks.findIndex(task => task._id == payload._id);
         state.tasks[index].distance = payload.distance;
         state.tasks[index].duration = payload.duration;
     },
-
     getUpdateTask: (state, payload) => {
         state.task = payload;
     },
@@ -61,10 +62,10 @@ export default {
             email: payload.email,
             token: payload.token,
         }
-        state.message = payload.message
+        state.message.push(payload.message)
     },
     signup: (state, payload) => {
-        state.message = payload.message;
+        state.message.push(payload.message);
     },
     logout: () => {
         localStorage.setItem('_id', "");
@@ -74,12 +75,13 @@ export default {
         router.push({
             path: '/auth'
         })
+        state.message.push("Başarıyla çıkış yaptınız.");
     },
     fetching: (state) => {
         state.isFetching = true;
     },
     fetched: (state) => {
         state.isFetching = false,
-            state.isFetched = true;
+        state.isFetched = true;
     },
 }

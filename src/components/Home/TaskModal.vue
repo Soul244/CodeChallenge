@@ -8,6 +8,7 @@
       <b-form @submit="onSubmit">
         <b-form-group>
           <FlashMessage />
+          <flash-message />
           <p v-if="formErrors.length">
             <b>Please correct the following error(s):</b>
             <ul>
@@ -128,7 +129,6 @@ export default {
       description: "",
       position: null,
       formErrors: [],
-      message: '',
       form: {
         _id: null,
         user: null,
@@ -145,9 +145,7 @@ export default {
     };
   },
   computed: {
-    resultMessage () {
-      return this.$store.state.message;
-    }
+    ...mapState(['message'])
   },
   watch: {
     task: function(newVal, oldVal) {
@@ -163,9 +161,6 @@ export default {
       form.isTaskDone = newVal.isTaskDone;
       form.isTaskMissed = newVal.isTaskMissed;
     },
-    resultMessage: function(newVal) {
-      this.flashMessage.show({status: 'error', title: 'Errors', message: newVal})
-    }
   },
   methods: {
     ...mapActions(["postTask", "updateTask"]),
@@ -195,10 +190,10 @@ export default {
         formErrors.push("Address is required")
       }
       if(formErrors.length>0){
-        this.flashMessage.show({status: 'error', title: 'Errors', message: formErrors.join(', ')})
+        this.flashMessage.show({status: 'info', title: 'Errors', message: formErrors.join(', ')})
       }
-      if(resultMessage) {
-        this.flashMessage.show({status: 'error', title: 'Errors', message: this.resultMessage})
+      if(this.message.length>0) {
+        this.flashMessage.show({status: 'info', title: 'Errors', message: this.message[this.message.length-1]})
       }
       form.user = localStorage.getItem("_id");
       if (this.type === "post") {

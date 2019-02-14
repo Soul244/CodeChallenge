@@ -19,7 +19,7 @@ export default new Vuex.Store({
     },
     task: {},
     errors: [],
-    message: '',
+    message: [],
     user: {
       _id:'',
       email:'',

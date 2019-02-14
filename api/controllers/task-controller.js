@@ -9,11 +9,12 @@ exports.Get_Task = (req, res) => {
     .then((task) => {
       if (task.length < 1) {
         return res.status(404).json({
-          error: 'Görüşme bulunamadı',
+          error: 'Görev bulunamadı',
         });
       }
       return res.status(200).json({
         task,
+        message: "Görev getirildi."
       });
     })
     .catch((error) => {
@@ -43,7 +44,7 @@ exports.Post_Task = (req, res) => {
     .then((task) => {
       res.status(200).json({
         task,
-        message: 'Görüşme kaydedildi',
+        message: 'Görev kaydedildi',
       });
     })
     .catch((error) => {
@@ -65,12 +66,12 @@ exports.Get_Tasks = (req, res) => {
       if (tasks.length > 0) {
         res.status(200).json({
           tasks,
-          message: 'Görüşmeler getirildi...',
+          message: 'Görev getirildi...',
         });
       } else {
         res.status(201).json({
           tasks: [],
-          message: 'Görüşme bulunamadı...',
+          message: 'Görev bulunamadı...',
         });
       }
     })
@@ -91,7 +92,7 @@ exports.Delete_Task = (req, res) => {
   .then(result =>
     res.status(200).json({
       _id,
-      message: 'Görüşme Silindi',
+      message: 'Görev Silindi',
     }))
   .catch((error) => {
     console.log(error);
@@ -115,7 +116,7 @@ exports.Update_Task = (req, res) => {
       res.status(200).json({
         _id,
         updatedData: result,
-        message: 'Görüşme Güncellendi',
+        message: 'Görev Güncellendi',
       });
     })
     .catch((err) => {

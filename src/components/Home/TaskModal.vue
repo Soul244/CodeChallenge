@@ -117,7 +117,10 @@ export default {
     },
     type: {
       type: String,
-      required: true
+      required: true,
+      validator: function (value) {
+        return ['post', 'update', ''].indexOf(value) !== -1
+      }
     }
   },
   data() {

@@ -688,13 +688,6 @@
   resolved "https://registry.yarnpkg.com/@nodelib/fs.stat/-/fs.stat-1.1.3.tgz#2b5a3ab3f918cca48a8c754c08168e3f03eba61b"
   integrity sha512-shAmDyaQC4H92APFoIaVDHCx5bStIocgvbwQyxPRrbUY20V1EYTbSDchWbuwlMG3V17cprZhA6+78JfB+3DTPw==
 
-"@smartweb/vue-flash-message@^0.4.1":
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/@smartweb/vue-flash-message/-/vue-flash-message-0.4.1.tgz#8cc50f025f488df0b2252f5de984b5cc533da139"
-  integrity sha512-vjHr9p1ZoNpPqGnOl6ptNJSxBOEwiMpAN9pnfV//AaiB5hDbUHGWXnEyDKhwcFyaM4SaIYNVHu3ZFXtrol0u+A==
-  dependencies:
-    vue "^2.5.17"
-
 "@soda/friendly-errors-webpack-plugin@^1.7.1":
   version "1.7.1"
   resolved "https://registry.yarnpkg.com/@soda/friendly-errors-webpack-plugin/-/friendly-errors-webpack-plugin-1.7.1.tgz#706f64bcb4a8b9642b48ae3ace444c70334d615d"
@@ -9639,11 +9632,6 @@ vue-eslint-parser@^4.0.2:
     esquery "^1.0.1"
     lodash "^4.17.11"
 
-vue-flash-message@^0.7.2:
-  version "0.7.2"
-  resolved "https://registry.yarnpkg.com/vue-flash-message/-/vue-flash-message-0.7.2.tgz#0668d6fa9fc70c65fd5c6ec246a415786960c34d"
-  integrity sha512-swOK9PxlWKzt1zzAMJX4YMU2O3kS0JznbwLy8burtKK2vibYc7ODRiEdAVnxRDQ09TG4tElVeO3hwwGDxQktaw==
-
 vue-functional-data-merge@^2.0.5:
   version "2.0.7"
   resolved "https://registry.yarnpkg.com/vue-functional-data-merge/-/vue-functional-data-merge-2.0.7.tgz#bdee655181eacdcb1f96ce95a4cc14e75313d1da"
@@ -9714,11 +9702,6 @@ vue2-google-maps@^0.10.5:
   dependencies:
     babel-runtime "^5.8.0"
     marker-clusterer-plus "^2.1.4"
-
-vue@^2.5.17:
-  version "2.6.4"
-  resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.4.tgz#8a5a44e5740d8b8423a420c8655c97663421fb4d"
-  integrity sha512-PbR3FWMgCGjRxRjtWURhcTTBSrA/WHvz9g7v6eCcA0GQQZ0a2W6VrbdP0FKxRU62N9iQSHi3+VYLPfZA8W8m+Q==
 
 vue@^2.5.22:
   version "2.6.3"

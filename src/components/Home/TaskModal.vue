@@ -6,21 +6,6 @@
       :title="title"
     >
       <b-form @submit="onSubmit">
-        <b-form-group>
-          <FlashMessage />
-          <flash-message />
-          <p v-if="formErrors.length">
-            <b>Please correct the following error(s):</b>
-            <ul>
-              <li
-                v-for="(error,index) in formErrors"
-                :key="index"
-              >
-                {{ error }}
-              </li>
-            </ul>
-          </p>
-        </b-form-group>
         <b-form-group label="Address:">
           <gmap-autocomplete
             class="form-control"
@@ -90,6 +75,25 @@
             placeholder="Please enter date"
           />
         </b-form-group>
+        <b-alert
+          :show="dismissCountDown"
+          dismissible
+          variant="danger"
+          @dismissed="dismissCountDown=0"
+          @dismiss-count-down="countDownChanged"
+        >
+          <p>
+            {{ infoMessage }}
+          </p>
+          <div class="progress-container">
+            <b-progress
+              variant="danger"
+              :max="dismissSecs"
+              :value="dismissCountDown"
+              height="4px"
+            />
+          </div>
+        </b-alert>
         <b-button
           type="submit"
           variant="primary"
@@ -141,7 +145,11 @@ export default {
         date: null,
         isTaskDone: null,
         isTaskMissed: null
-      }
+      },
+        dismissSecs: 5,
+        dismissCountDown: 0,
+        showDismissibleAlert: false,
+        infoMessage:'',
     };
   },
   computed: {
@@ -170,6 +178,9 @@ export default {
     setAddress(address) {
       this.form.address = address;
     },
+    countDownChanged(dismissCountDown) {
+        this.dismissCountDown = dismissCountDown
+    },
     onSubmit(e) {
       e.preventDefault();
       this.formErrors=[];
@@ -190,10 +201,12 @@ export default {
         formErrors.push("Address is required")
       }
       if(formErrors.length>0){
-        this.flashMessage.show({status: 'info', title: 'Errors', message: formErrors.join(', ')})
+        this.infoMessage= formErrors.join(', ');
+        this.dismissCountDown = this.dismissSecs
       }
       if(this.message.length>0) {
-        this.flashMessage.show({status: 'info', title: 'Errors', message: this.message[this.message.length-1]})
+        this.infoMessage = this.message[this.message.length-1];
+        this.dismissCountDown = this.dismissSecs
       }
       form.user = localStorage.getItem("_id");
       if (this.type === "post") {
@@ -207,4 +220,7 @@ export default {
 </script>
 
 <style scoped>
+.progress-container{
+ margin-top: 1rem;
+}
 </style>

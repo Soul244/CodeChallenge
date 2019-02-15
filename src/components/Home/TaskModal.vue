@@ -107,7 +107,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState, mapGetters } from "vuex";
 
 export default {
   name: "TaskModal",
@@ -153,7 +153,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(['message'])
+    ...mapGetters(['message'])
   },
   watch: {
     task: function(newVal, oldVal) {
@@ -169,6 +169,10 @@ export default {
       form.isTaskDone = newVal.isTaskDone;
       form.isTaskMissed = newVal.isTaskMissed;
     },
+    message: function(newVal,oldVal){
+        this.infoMessage = this.message[this.message.length-1];
+        this.dismissCountDown = this.dismissSecs
+    }
   },
   methods: {
     ...mapActions(["postTask", "updateTask"]),
@@ -202,10 +206,6 @@ export default {
       }
       if(formErrors.length>0){
         this.infoMessage= formErrors.join(', ');
-        this.dismissCountDown = this.dismissSecs
-      }
-      if(this.message.length>0) {
-        this.infoMessage = this.message[this.message.length-1];
         this.dismissCountDown = this.dismissSecs
       }
       form.user = localStorage.getItem("_id");

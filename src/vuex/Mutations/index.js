@@ -43,6 +43,7 @@ export default {
     },
     clearTask: (state) => {
         state.task = {};
+        state.message = [];
     },
     setUserLocation: (state, payload) => {
         state.userLocation = payload;
@@ -82,6 +83,6 @@ export default {
     },
     fetched: (state) => {
         state.isFetching = false,
-        state.isFetched = true;
+            state.isFetched = true;
     },
 }

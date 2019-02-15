@@ -77,6 +77,13 @@ export default {
             context.commit("fetched");
         }
         tasks.forEach(task => {
+            if(task.address===null) {
+                count++;
+                if (count === tasks.length) {
+                    context.commit("fetched");
+                }
+                return;
+            };
             const starting = {
                 lat,
                 lng

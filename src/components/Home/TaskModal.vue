@@ -26,7 +26,7 @@
             />
             <Gmap-Marker
               v-if="form.address"
-              label=""
+              label
               :position="{
                 lat: form.address.geometry.location.lat(),
                 lng: form.address.geometry.location.lng(),
@@ -94,8 +94,8 @@ import Alert from "@/components/Shared/Alert";
 
 export default {
   name: "TaskModal",
-  components:{
-    Alert,
+  components: {
+    Alert
   },
   props: {
     title: {
@@ -109,8 +109,8 @@ export default {
     type: {
       type: String,
       required: true,
-      validator: function (value) {
-        return ['post', 'update', ''].indexOf(value) !== -1
+      validator: function(value) {
+        return ["post", "update", ""].indexOf(value) !== -1;
       }
     }
   },
@@ -131,11 +131,11 @@ export default {
         date: null,
         isTaskDone: null,
         isTaskMissed: null
-      },
+      }
     };
   },
   computed: {
-    ...mapGetters(['message'])
+    ...mapGetters(["message"])
   },
   watch: {
     task: function(newVal, oldVal) {
@@ -151,8 +151,8 @@ export default {
       form.isTaskDone = newVal.isTaskDone;
       form.isTaskMissed = newVal.isTaskMissed;
     },
-    message: function(){
-        this.$refs.alert.showMessage(this.message[this.message.length-1])
+    message: function() {
+      this.$refs.alert.showMessage(this.message[this.message.length - 1]);
     }
   },
   methods: {
@@ -165,31 +165,32 @@ export default {
     },
     onSubmit(e) {
       e.preventDefault();
-      this.formErrors=[];
-      const {form,formErrors, resultMessage} = this;
-      if(!form.name){
-        formErrors.push('Name required')
+      this.formErrors = [];
+      const { form, formErrors, resultMessage } = this;
+      if (!form.name) {
+        formErrors.push("Name required");
       }
-      if(!form.surname){
-        formErrors.push("Surname required")
+      if (!form.surname) {
+        formErrors.push("Surname required");
       }
-      if(!form.time){
+      if (!form.time) {
         formErrors.push("Time is required");
       }
-      if(!form.date){
+      if (!form.date) {
         formErrors.push("Date is required");
       }
-      if(!form.address){
-        formErrors.push("Address is required")
+      if (!form.address) {
+        formErrors.push("Address is required");
       }
-      if(formErrors.length>0){
-        this.$refs.alert.showMessage(formErrors.join(', '))
-      }
-      form.user = localStorage.getItem("_id");
-      if (this.type === "post") {
-        this.postTask(this.form);
+      if (formErrors.length > 0) {
+        this.$refs.alert.showMessage(formErrors.join(", "));
       } else {
-        this.updateTask(this.form);
+        form.user = localStorage.getItem("_id");
+        if (this.type === "post") {
+          this.postTask(this.form);
+        } else {
+          this.updateTask(this.form);
+        }
       }
     }
   }

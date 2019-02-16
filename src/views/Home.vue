@@ -75,7 +75,7 @@ export default {
   components: {
     Navbar,
     TaskModal,
-    TaskList
+    TaskList,
   },
   data() {
     return {
@@ -129,7 +129,7 @@ export default {
       }
     }
   },
-  beforeMount() {
+  mounted() {
     this.getTasks();
     this.handleUserLocation();
     const token = localStorage.getItem("token");

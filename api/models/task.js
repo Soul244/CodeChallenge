@@ -6,7 +6,6 @@ const taskSchema = mongoose.Schema({
   surname: { type: String, required: true },
   email: {
     type: String,
-    required: true,
     match: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/,
   },
   address: {type: Object, required: true},

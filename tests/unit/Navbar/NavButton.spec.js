@@ -4,12 +4,13 @@ import {
 import NavButton from "@/components/Navbar/NavButton.vue";
 
 describe("NavButton.vue", () => {
+  const props = {
+    icon: "home",
+    text: "Home Button",
+    bottom: true
+  }
+
   it("Nav Button Rendering", () => {
-    const props = {
-      icon: "home",
-      text: "Home Button",
-      bottom: false
-    }
     const wrapper = shallowMount(NavButton, {
       propsData: props
     });
@@ -17,4 +18,20 @@ describe("NavButton.vue", () => {
     expect(wrapper.props().text).toBe(props.text);
     expect(wrapper.props().bottom).toBe(props.bottom);
   });
+
+  it("Nav Button Click", ()=>{
+    const wrapper = shallowMount(NavButton, {
+      propsData: props
+    })
+    const button = wrapper.find('.nav-button');
+    button.trigger('click')
+  })
+
+  it("Nav Button Style", ()=>{
+    const wrapper = shallowMount(NavButton, {
+      propsData: props
+    })
+    const button = wrapper.find('.nav-button');
+    button.trigger('click')
+  })
 });

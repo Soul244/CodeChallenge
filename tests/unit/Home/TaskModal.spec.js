@@ -25,11 +25,21 @@ describe("TaskModal.vue", () => {
         const wrapper = shallowMount(TaskModal, {
             propsData: props,
             computed: {
-                resultMessage() {
+                message() {
                     return "message"
                 }
             },
-            stubs: ['b-form', "b-modal", "b-button", "b-form-group", "b-form-input", "FlashMessage", "gmap-autocomplete", "Gmap-Map"]
+            stubs: [
+                'b-form',
+                "b-modal",
+                "b-progress",
+                "b-alert", 
+                "b-button", 
+                "b-form-group", 
+                "b-form-input", 
+                "gmap-autocomplete", 
+                "Gmap-Map"
+            ]
         });
         expect(wrapper.props().title).toBe(props.title);
         expect(wrapper.props().task).toBe(props.task);

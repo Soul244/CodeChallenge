@@ -43,13 +43,7 @@
                 />
               </b-tab>
             </b-tabs>
-            <template>
-              <div v-if="message">
-                <b-alert show>
-                  {{ message }}
-                </b-alert>
-              </div>
-            </template>
+            <Alert ref="alert" />
           </b-card>
         </b-col>
       </b-row>
@@ -61,6 +55,7 @@
 import ResetPassword from "@/components/Auth/ResetPassword";
 import Login from "@/components/Auth/Login";
 import SignUp from "@/components/Auth/SignUp";
+import Alert from "@/components/Shared/Alert";
 import { mapActions, mapState } from "vuex";
 
 export default {
@@ -68,7 +63,8 @@ export default {
   components: {
     ResetPassword,
     Login,
-    SignUp
+    SignUp,
+    Alert
   },
   data() {
     return {
@@ -88,6 +84,11 @@ export default {
   },
   computed:{
     ...mapState(['user', "message"]),
+  },
+  watch:{
+    message: function(){
+        this.$refs.alert.showMessage(this.message[this.message.length-1])
+    }
   },
   methods: {
     ...mapActions(["login", "signup"]),

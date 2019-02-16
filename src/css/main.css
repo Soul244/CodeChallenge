@@ -47,4 +47,11 @@ p {
 .pac-container {
   z-index: 9999;
 }
+
+.alert {
+  position: fixed !important;
+  left: 16px;
+  z-index: 99;
+  bottom: 10px;
+}
 /*# sourceMappingURL=main.css.map */

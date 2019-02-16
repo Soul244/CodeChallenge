@@ -42,7 +42,6 @@ export default {
             })
     },
     deleteTask: (context, _id) => {
-        console.log(_id);
         axios.delete(`${apiUrl}/tasks/${_id}`)
             .then((response) => {
                 context.commit('deleteTask', response.data)

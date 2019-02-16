@@ -68,7 +68,7 @@ export default {
     signup: (state, payload) => {
         state.message.push(payload.message);
     },
-    logout: () => {
+    logout: (state) => {
         localStorage.setItem('_id', "");
         localStorage.setItem('email', "");
         localStorage.setItem('name', "");
@@ -83,6 +83,6 @@ export default {
     },
     fetched: (state) => {
         state.isFetching = false,
-            state.isFetched = true;
+        state.isFetched = true;
     },
 }

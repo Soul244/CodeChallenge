@@ -6,6 +6,7 @@
       :title="title"
     >
       <b-form @submit="onSubmit">
+        <Alert ref="alert" />
         <b-form-group label="Address:">
           <gmap-autocomplete
             class="form-control"
@@ -75,25 +76,6 @@
             placeholder="Please enter date"
           />
         </b-form-group>
-        <b-alert
-          :show="dismissCountDown"
-          dismissible
-          variant="danger"
-          @dismissed="dismissCountDown=0"
-          @dismiss-count-down="countDownChanged"
-        >
-          <p>
-            {{ infoMessage }}
-          </p>
-          <div class="progress-container">
-            <b-progress
-              variant="danger"
-              :max="dismissSecs"
-              :value="dismissCountDown"
-              height="4px"
-            />
-          </div>
-        </b-alert>
         <b-button
           type="submit"
           variant="primary"
@@ -108,9 +90,13 @@
 
 <script>
 import { mapActions, mapState, mapGetters } from "vuex";
+import Alert from "@/components/Shared/Alert";
 
 export default {
   name: "TaskModal",
+  components:{
+    Alert,
+  },
   props: {
     title: {
       type: String,
@@ -146,10 +132,6 @@ export default {
         isTaskDone: null,
         isTaskMissed: null
       },
-        dismissSecs: 5,
-        dismissCountDown: 0,
-        showDismissibleAlert: false,
-        infoMessage:'',
     };
   },
   computed: {
@@ -169,9 +151,8 @@ export default {
       form.isTaskDone = newVal.isTaskDone;
       form.isTaskMissed = newVal.isTaskMissed;
     },
-    message: function(newVal,oldVal){
-        this.infoMessage = this.message[this.message.length-1];
-        this.dismissCountDown = this.dismissSecs
+    message: function(){
+        this.$refs.alert.showMessage(this.message[this.message.length-1])
     }
   },
   methods: {
@@ -181,9 +162,6 @@ export default {
     },
     setAddress(address) {
       this.form.address = address;
-    },
-    countDownChanged(dismissCountDown) {
-        this.dismissCountDown = dismissCountDown
     },
     onSubmit(e) {
       e.preventDefault();
@@ -205,8 +183,7 @@ export default {
         formErrors.push("Address is required")
       }
       if(formErrors.length>0){
-        this.infoMessage= formErrors.join(', ');
-        this.dismissCountDown = this.dismissSecs
+        this.$refs.alert.showMessage(formErrors.join(', '))
       }
       form.user = localStorage.getItem("_id");
       if (this.type === "post") {
@@ -218,9 +195,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-.progress-container{
- margin-top: 1rem;
-}
-</style>

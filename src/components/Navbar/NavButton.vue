@@ -1,18 +1,15 @@
 <template>
   <button
     :style="style"
+    class="nav-button"
     @click="click"
   >
-    <div
-      class="nav-item"
-    >
-      <i class="material-icons">
-        {{ icon }}
-      </i>
-      <p class="nav-text">
-        {{ text }}
-      </p>
-    </div>
+    <i class="material-icons">
+      {{ icon }}
+    </i>
+    <p class="nav-text">
+      {{ text }}
+    </p>
   </button>
 </template>
 
@@ -50,7 +47,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.nav-item {
+.nav-button {
   padding: 0.5rem 0 0.5rem 1rem;
   text-align: left;
 }
